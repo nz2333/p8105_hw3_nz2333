@@ -1,0 +1,33 @@
+---
+title: "p8105_hw3_nz2333"
+author: "nz2333"
+date: "10/20/2021"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(p8105.datasets)
+data("instacart")
+```
+
+_Problem 1_
+#Question1
+```{r}
+aisles = instacart %>%
+  count(aisle, sort = TRUE)
+
+aisles
+```
+/There are total 134 aisles in the data. The aisle with most n is "fresh vegetabes", with 150609 items./
+
+#Question2
+```{r}
+aisles %>%
+  count(aisle, sort = TRUE)%>%
+  filter(n > 10000)%>%
+  ggplot(aes(x = aisles, y = n))+
+  geom_bar()
+
+```
+
