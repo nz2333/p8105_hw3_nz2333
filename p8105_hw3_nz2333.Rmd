@@ -12,6 +12,7 @@ data("instacart")
 ```
 
 _Problem 1_
+
 #Question1
 ```{r}
 aisles = instacart %>%
@@ -19,15 +20,36 @@ aisles = instacart %>%
 
 aisles
 ```
-/There are total 134 aisles in the data. The aisle with most n is "fresh vegetabes", with 150609 items./
+/There are total 134 aisles in the data. The aisle with most n is "fresh vegetables", with 150609 items./
 
 #Question2
 ```{r}
-aisles %>%
+aisles2 = instacart %>%
   count(aisle, sort = TRUE)%>%
-  filter(n > 10000)%>%
-  ggplot(aes(x = aisles, y = n))+
-  geom_bar()
+  filter(n > 10000)
 
+ggplot(data = aisles2, aes(x = reorder(aisle, -n), y = n))+
+  geom_bar(stat = "identity")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))+
+  labs(title = "Number of Items in each aisle")+
+  xlab("Aisles")+
+  ylab("Items Count")
+```
+
+#Question3
+```{r}
+instacart %>%
+  filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")
+  )%>%
+  group_by(aisle, product_name)%>%
+  summarize(
+    item_num = n()
+  )%>%
+  mutate(
+    item_rank = min_rank(-item_num)
+  )%>%
+  filter(item_rank < 4) %>%
+  select(-item_rank) %>%
+  knitr::kable()
 ```
 
