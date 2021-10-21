@@ -164,3 +164,43 @@ q3 %>%
 ```
 
 /These two graphs are for data value distributioof each reponse level for year 2006 and 2010. /
+
+# Problem 3
+
+#Question1
+```{r}
+problem3 = read_csv("./accel_data.csv")
+
+problem3 %>%
+  janitor::clean_names()%>%
+  mutate(
+    day_type = ifelse(day_id %in% c(6, 7), 
+                      "Weedkend", "Weekday") 
+  ) %>%
+ relocate(day_id, day, day_type, week)
+```
+
+/The final cleaned dataset has 35 observations with 1444 variables. 
+Important vatiables are: day, day_type, week, day_id, and all the activity values./
+
+#Question2
+```{r}
+p3q2 = problem3 %>%
+  mutate(
+    day_activity = rowSums(across(activity.1:activity.1440), na.rm = TRUE)
+  )
+
+p3q2 %>%
+  select(week, day, day_activity) %>%
+  pivot_wider(
+    names_from = day, 
+    values_from = day_activity) %>%
+  relocate(week, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) %>%
+  knitr::kable()
+```
+
+/Based on the output table, we see that activity sum for each day is typically lower on start of the week, and increases up over the weekdays, and drops again over the weekends./
+
+#Question3
+
+
