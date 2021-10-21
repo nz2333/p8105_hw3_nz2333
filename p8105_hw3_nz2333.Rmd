@@ -202,5 +202,21 @@ p3q2 %>%
 /Based on the output table, we see that activity sum for each day is typically lower on start of the week, and increases up over the weekdays, and drops again over the weekends./
 
 #Question3
+```{r}
+p3q3 = problem3 %>%
+  select(week, day, day_id, activity.1:activity.1440) %>%
+  pivot_longer(
+    activity.1:activity.1440, names_to = "Minute", values_to = "Activity")
 
+p3q3 %>%
+  mutate(
+  day = factor(day, levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+  )
+```
+```{r}
+p3q3 %>%
+  ggplot(aes(x = Minute, y = Activity, color = day, se = FALSE)) +
+  geom_line () +
+  geom_smooth(aes(group = day), se = FALSE) 
+```
 
